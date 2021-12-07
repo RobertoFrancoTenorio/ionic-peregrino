@@ -1,0 +1,7 @@
+{
+  "name": "peregrino",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
