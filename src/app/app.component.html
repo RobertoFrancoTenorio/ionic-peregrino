@@ -1,3 +1,33 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="secondary">
+    </ion-buttons>
+    <ion-title>Peregrino</ion-title>
+  </ion-toolbar>
+
+  <!-- Menu -->
+  <ion-menu side="start" menuId="first" contentId="main">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Start Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <span  *ngFor="let v of vistas">
+          <ion-item>{{v.title}}</ion-item>
+        </span>
+        <span *ngIf="usuario == true">
+          <ion-item (click)="logout()">
+            Salir
+          </ion-item>
+        </span>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <!-- Fin menu -->
+  <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>
