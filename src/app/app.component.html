@@ -9,22 +9,35 @@
   </ion-toolbar>
 
   <!-- Menu -->
-  <ion-menu side="start" menuId="first" contentId="main">
+  <ion-menu side="start" menuId="first" contentId="main" [disabled]="!usuario">
     <ion-header>
-      <ion-toolbar color="primary">
-        <ion-title>Start Menu</ion-title>
+      <ion-toolbar>
+        <ion-title>Opciones</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
+    <ion-content><!--
+      <ion-card>
+        <ion-card-header>
+          <ion-thumbnail slot="start">
+            <ion-img [src]="">
+              <img src="https://www.nicepng.com/png/detail/867-8678512_doctor-icon-physician.png" alt="" srcset="">
+            </ion-img>
+          </ion-thumbnail>
+          <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+          <ion-card-title>Card Title</ion-card-title>
+        </ion-card-header>
+      </ion-card> -->
       <ion-list>
-        <span  *ngFor="let v of vistas">
-          <ion-item>{{v.title}}</ion-item>
+        <ion-item><ion-icon name="home-outline"></ion-icon><h5 class ="texto">Home</h5></ion-item>
+        <span *ngIf="asignada == 0">
+          <ion-item [hidden]="!doctor"><ion-icon class="clock" name="time-outline"></ion-icon><h5 class ="texto">Citas Asignadas</h5><ion-badge class="badge" color="tertiary">{{asignada}}</ion-badge></ion-item>
         </span>
-        <span *ngIf="usuario == true">
-          <ion-item (click)="logout()">
-            Salir
-          </ion-item>
+        <span *ngIf="asignada > 0">
+          <ion-item [hidden]="!doctor" (click)="goToCitas()"><ion-icon class="clock" name="time-outline"></ion-icon><h5 class ="texto">Citas Asignadas</h5><ion-badge class="badge" color="tertiary">{{asignada}}</ion-badge></ion-item>
         </span>
+        <ion-item [hidden]="!doctor" (click)="goToCitasAceptadas()"><ion-icon class="check" name="checkmark-circle-outline"></ion-icon><h5 class ="texto">Citas Aceptadas</h5><ion-badge class="badge" color="success">{{aceptadas}}</ion-badge></ion-item>
+        <ion-item [hidden]="doctor"><ion-icon name="id-card-outline"></ion-icon><h5 class ="texto">Pacientes</h5></ion-item>
+        <ion-item (click)="logout()"><ion-icon name="exit-outline"></ion-icon><h5 class ="texto">Salir</h5></ion-item>
       </ion-list>
     </ion-content>
   </ion-menu>

@@ -1,83 +1,76 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
+import { CitaService } from './services/citas/cita.service';
 import { AuthService } from './services/auth/auth.service';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
-  vistas = [
-    {
-      title: 'Inicio',
-      url: '/home',
-      icon: 'fa-home',
-    },
-    {
-      title: 'Salir',
-      url: '/login',
-      icon: 'fa-home',
-    }
-  ]
+export class AppComponent implements OnInit {
+  asignada = null;
+  usuario = null;
+  doctor: boolean = false;
+  aceptadas: number = 0;
 
-  vistasDoctor = [
-    {
-      title: 'Inicio',
-      url: '/home',
-      icon: 'fa-home',
-    },
-    {
-      title: 'Consultas',
-      url: '/login',
-      icon: 'fa-home',
-    }
-  ]
-
-  vistasAsistente = [
-    {
-      title: 'Inicio',
-      url: '/home',
-      icon: 'fa-home',
-    },
-    {
-      title: 'Pacientes',
-      url: '/login',
-      icon: 'fa-home',
-    }
-  ]
-
-  usuario;
   constructor(
-    private menu: MenuController,
-    private auth: AuthService
-  ) {}
+    private menuCtrl: MenuController,
+    private auth: AuthService,
+    private cita: CitaService,
+    private router: Router
+  ) {
 
-  ngOnInit() {
+  }
+
+  async ngOnInit() {
+    this.menuCtrl.enable(false)
     this.auth.userDetails().subscribe(async (user) => {
-      console.log('user', user);
-      if(user==null){
-        this.vistas = []
-        this.usuario = false
-      }
       if(user!=null){
         this.auth.currentUser = user;
         await this.auth.getUserData();
-        if(this.auth.dataUser.is_Doctor == 'Si'){
-          this.vistas = this.vistasDoctor;
-          this.usuario = true;
-          }
-        else{
-          this.vistas = this.vistasAsistente;
-          this.usuario = true;
+        this.determinaUsuario(this.auth.dataUser.is_Doctor);
         }
-        }
-      }
-    )
+    })
   }
 
   logout(){
-    this.menu.close();
+    this.menuCtrl.close();
     this.auth.signOut();
+    this.usuario = false;
+    this.doctor = false;
     console.log('logout');
+  }
+
+  determinaUsuario(data: any){
+    if(data == 'Si'){
+      this.usuario = true;
+      this.doctor = true;
+      //console.log(data)
+      this.numeroCitas();
+    }
+    else{
+      this.usuario = true;
+    }
+  }
+
+  numeroCitas(){
+    this.cita.getCitasAsignadasDoctor(this.auth.dataUser.id).subscribe(data =>{
+      this.asignada = data.length;
+    });
+    this.cita.getCitasEstatus(this.auth.currentUserId, 'aceptada').subscribe(data =>{
+      this.aceptadas = data.length;
+    })
+  }
+
+  goToCitas(){
+    this.menuCtrl.close();
+    this.router.navigate(['/citas'])
+  }
+
+  goToCitasAceptadas(){
+    this.menuCtrl.close();
+    this.router.navigate(['/citas-aceptadas'])
   }
 }

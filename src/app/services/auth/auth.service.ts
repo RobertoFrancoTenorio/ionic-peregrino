@@ -22,7 +22,7 @@ export class AuthService {
     public router: Router,
   ) {
     this.afAuth.onAuthStateChanged(async (user) =>{
-      console.log(user);
+      //console.log(user);
       if(user!=null){
         this.currentUser = user;
         await this.getUserData();

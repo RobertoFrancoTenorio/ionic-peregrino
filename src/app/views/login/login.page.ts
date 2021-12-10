@@ -14,6 +14,17 @@ export class LoginPage implements OnInit {
   passError = false;
   errorMessage: string = '';
 
+  validation_messages = {
+    'email': [
+      { type: 'required', message: 'El correo electrónico es requerido.' },
+      { type: 'pattern', message: 'Ingresa un correo electrónico valido.' }
+    ],
+    'password': [
+      { type: 'required', message: 'La contraseña es requerido.' },
+      { type: 'minlength', message: 'La contraseña debe contener mínimo 6 caracteres.' }
+    ]
+  };
+
   constructor(private auth: AuthService, private router: Router,) {
     this.loginForm = new FormGroup({
       'email': new FormControl('', Validators.compose([
