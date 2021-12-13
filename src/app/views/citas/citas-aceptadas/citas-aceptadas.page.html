@@ -4,11 +4,103 @@
 </ion-header>
 
 <ion-content>
+  <h5 class="title">Calendario</h5>
   <ion-list>
-    <span *ngFor="let cita of citas">
+    <span *ngFor="let fecha1 of arrayCitas; let i = index">
+      <mat-accordion>
+        <mat-expansion-panel class="panel" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <span class="cita">Citas para el día</span>
+            </mat-panel-title>
+            <mat-panel-description>
+              <ion-icon class="calendar" name="calendar-number-outline"></ion-icon> {{ fecha1 }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <span *ngFor="let cita of citas">
+            <span *ngIf="fecha1 == cita.f_cita">
+              <ion-item color="success">
+                <ion-label class="header" >
+                  <ion-icon name="person-circle-outline" class="icon_paciente"></ion-icon>
+                  <h5 class="title">Paciente: {{cita.title}}</h5>
+                </ion-label>
+              </ion-item>
+              <ion-item >
+                <div class="estatus">
+                  <ion-label>Estado de la cita:
+                    <ion-chip color="success">
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                    <ion-label>Aceptada</ion-label>
+                    </ion-chip>
+                  </ion-label>
+                </div>
+              </ion-item>
+
+              <ion-item>
+                <mat-accordion>
+                  <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Información de la consulta
+                      </mat-panel-title>
+                      <mat-panel-description>
+                        <ion-icon name="add-outline"></ion-icon> Ver información
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <ion-item class="infoConsulta">
+                      <ion-label>Inicio: <span class="info">{{cita.start}}</span></ion-label>
+                    </ion-item>
+                    <ion-item class="infoConsulta">
+                      <ion-label>Fin: <span class="info">{{cita.end}}</span></ion-label>
+                    </ion-item>
+                    <ion-item class="infoConsulta">
+                      <ion-label class="hora">Fecha: <span class="info">{{cita.f_cita}}</span></ion-label>
+                    </ion-item>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </ion-item>
+
+              <ion-item>
+                <mat-accordion>
+                  <mat-expansion-panel hideToggle>
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        Información de contacto
+                      </mat-panel-title>
+                      <mat-panel-description>
+                        <ion-icon name="add-outline"></ion-icon> Ver información
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <ion-item>
+                      <ion-label>Email: {{cita.extendedProps.currentCita.detPaciente.email}}</ion-label>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label>Celular: {{cita.extendedProps.currentCita.detPaciente.celular}}</ion-label>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label>Telefono: {{cita.extendedProps.currentCita.detPaciente.telefono}}</ion-label>
+                    </ion-item>
+                    <ion-item>
+                      <ion-label>Comentarios: {{cita.extendedProps.currentCita.comentarios}}</ion-label>
+                    </ion-item>
+                    <ion-button (click)="realizarConsulta(cita)" class="btn" type="submit" color="success" expand="block" >
+                      Realizar Consulta
+                    </ion-button>
+                  </mat-expansion-panel>
+                </mat-accordion>
+              </ion-item>
+            </span>
+          </span>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </span>
+  </ion-list>
+</ion-content>
+
+<!--<span *ngFor="let cita of citas">
       <ion-item color="success">
         <ion-label class="header" >
-          <ion-icon name="person-outline" class="icon_paciente"></ion-icon>
+          <ion-icon name="person-circle-outline" class="icon_paciente"></ion-icon>
           <h5 class="title">Paciente: {{cita.title}}</h5>
         </ion-label>
       </ion-item>
@@ -22,17 +114,57 @@
           </ion-label>
         </div>
       </ion-item>
-      <ion-item class="infoConsulta">
-        <ion-label class="hora">Inicio: <span class="info">{{cita.start}}</span></ion-label>
-        <ion-label class="hora">Fin: <span class="info">{{cita.end}}</span></ion-label>
+
+      <ion-item>
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Información de la consulta
+              </mat-panel-title>
+              <mat-panel-description>
+                <ion-icon name="add-outline"></ion-icon> Ver información
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <ion-item class="infoConsulta">
+              <ion-label class="hora">Inicio: <span class="info">{{cita.start}}</span></ion-label>
+              <ion-label class="hora">Fin: <span class="info">{{cita.end}}</span></ion-label>
+            </ion-item>
+            <ion-item class="infoConsulta">
+              <ion-label class="hora">Fecha: <span class="info">{{cita.f_cita}}</span></ion-label>
+            </ion-item>
+          </mat-expansion-panel>
+        </mat-accordion>
       </ion-item>
-      <ion-item class="infoConsulta">
-        <ion-label class="hora">Fecha: <span class="info">{{cita.f_cita}}</span></ion-label>
+
+      <ion-item>
+        <mat-accordion>
+          <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Información de contacto
+              </mat-panel-title>
+              <mat-panel-description>
+                <ion-icon name="add-outline"></ion-icon> Ver información
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <ion-item>
+              <ion-label>Email: {{cita.extendedProps.currentCita.detPaciente.email}}</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Celular: {{cita.extendedProps.currentCita.detPaciente.celular}}</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Telefono: {{cita.extendedProps.currentCita.detPaciente.telefono}}</ion-label>
+            </ion-item>
+            <ion-item>
+              <ion-label>Comentarios:{{cita.extendedProps.currentCita.comentarios}}</ion-label>
+            </ion-item>
+            <ion-button (click)="realizarConsulta(cita)" class="btn" type="submit" color="success" expand="block" >
+              Realizar Consulta
+            </ion-button>
+          </mat-expansion-panel>
+        </mat-accordion>
       </ion-item>
-      <ion-button (click)="realizarConsulta(cita)" class="btn" type="submit" color="success" expand="block" >
-        Realizar Consulta
-      </ion-button>
       <br>
-    </span>
-  </ion-list>
-</ion-content>
+    </span> -->

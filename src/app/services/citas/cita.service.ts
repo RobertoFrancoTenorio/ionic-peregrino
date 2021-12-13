@@ -16,6 +16,11 @@ export class CitaService {
     //private DatePipe: DatePipe
   ) { }
 
+  getPacienteData(id:string) {
+    //return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges();
+    return this.afs.doc('/SegMedico/peregrino/Pacientes/'+id).valueChanges()
+  }
+
   getCitasAsignadasDoctor(id: string){
     return this.afs.collection('/SegMedico/peregrino/citas', ref =>
     ref.where('detDoctor.id', '==', id,).where('estatus', '==', 'asignada')).snapshotChanges().pipe(
@@ -77,7 +82,7 @@ export class CitaService {
 
   getCitasEstatus(id: string, estatus: string){
     return this.afs.collection('/SegMedico/peregrino/citas', ref =>
-      ref.where('detDoctor.id', '==', id).where('estatus', '==', estatus)).snapshotChanges().pipe(
+      ref.where('detDoctor.id', '==', id).where('estatus', '==', estatus).orderBy('f_cita', 'asc')).snapshotChanges().pipe(
         map(actions => actions.map(a => {
           var color = ' '
             var background = ' '

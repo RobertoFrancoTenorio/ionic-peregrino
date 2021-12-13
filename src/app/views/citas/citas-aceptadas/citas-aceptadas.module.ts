@@ -7,13 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { CitasAceptadasPageRoutingModule } from './citas-aceptadas-routing.module';
 
 import { CitasAceptadasPage } from './citas-aceptadas.page';
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    CitasAceptadasPageRoutingModule
+    CitasAceptadasPageRoutingModule,
+    MatExpansionModule
   ],
   declarations: [CitasAceptadasPage]
 })
