@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
       if(user!=null){
         this.auth.currentUser = user;
         await this.auth.getUserData();
+        //this.auth.signOut();
         this.determinaUsuario(this.auth.dataUser.is_Doctor);
         }
     })

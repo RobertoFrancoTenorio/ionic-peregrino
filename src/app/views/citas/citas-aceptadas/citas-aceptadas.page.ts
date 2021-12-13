@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { CitaService } from 'src/app/services/citas/cita.service';
+import { NavigationExtras, Router} from '@angular/router';
 import Swal from 'sweetalert2';
 import * as moment from 'moment';
 
@@ -13,7 +14,8 @@ export class CitasAceptadasPage implements OnInit {
   citas = []
   constructor(
     private citaService: CitaService,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,23 @@ export class CitasAceptadasPage implements OnInit {
       cancelButtonColor: "#ff4961",
       confirmButtonText: 'Si',
       cancelButtonText: 'No',
+    }).then(result => {
+      if(result.isConfirmed){
+        this.goToConsulta(cita.extendedProps.currentCita)
+      }
+      else if(result.isDenied){
+
+      }
     })
+  }
+
+  goToConsulta(data: any){
+    const navigationExtras: NavigationExtras = {
+      state: {
+        infoCita: data,
+      }
+    };
+    this.router.navigate(['consulta'], navigationExtras);
   }
 
 }
