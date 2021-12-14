@@ -77,8 +77,8 @@
     </div>
 
     <div class="buttons">
-      <ion-button type="submit" class="btn" color="success"><ion-icon name="checkmark-circle-outline"></ion-icon> Guardar</ion-button>
-      <ion-button class="btn" color="danger"><ion-icon name="close-circle-outline"></ion-icon> Cancelar</ion-button>
+      <ion-button type="submit" [disabled]="!consultaForm.valid" class="btn" color="success"><ion-icon name="checkmark-circle-outline"></ion-icon> Guardar</ion-button>
+      <ion-button class="btn" color="danger" (click)="goToHome()"><ion-icon name="close-circle-outline" ></ion-icon> Cancelar</ion-button>
     </div>
   </form>
 </ion-content>

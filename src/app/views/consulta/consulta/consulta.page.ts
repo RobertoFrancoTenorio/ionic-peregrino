@@ -130,4 +130,7 @@ export class ConsultaPage implements OnInit {
     }
   }
 
+  goToHome(){
+    this.router.navigate(['citas-aceptadas']);
+  }
 }
